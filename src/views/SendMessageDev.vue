@@ -117,22 +117,22 @@ export default {
           if (action === 'confirm') {
             sendNotification(self.title, self.content, self.firebaseToken)
           } else {
-            console.log('Send action cancelled')
+              self.$log.info('Send action cancelled')
           }
         }
       })
     },
     onEditorBlur (quill) {
-      console.log('editor blur!', quill)
+        this.$log.info('editor blur!', quill)
     },
     onEditorFocus (quill) {
-      console.log('editor focus!', quill)
+        this.$log.info('editor focus!', quill)
     },
     onEditorReady (quill) {
-      console.log('editor ready!', quill)
+        this.$log.info('editor ready!', quill)
     },
     onEditorChange ({ quill, html, text }) {
-      console.log('editor change!', quill, html, text)
+        this.$log.info('editor change!', quill, html, text)
       this.content = html
     }
   }

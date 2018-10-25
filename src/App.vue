@@ -1,17 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img src="./assets/logo2.png" class="img-fluid">
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import firebase from 'firebase'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  created () {
+    this.$router.beforeEach((to, from, next) => {
+      if (to.meta.title !== undefined) {
+        document.title = to.meta.title
+      }
+      let currentUser = firebase.auth().currentUser
+      let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+      if (requiresAuth && !currentUser) {
+        next('login')
+      } else {
+        next()
+      }
+    })
   }
 }
 </script>
