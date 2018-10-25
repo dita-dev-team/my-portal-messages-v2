@@ -42,5 +42,5 @@ export default new Router({
         title: 'Login to send a message'
       }
     }
-  ]
+  ],mode:'history'
 })
