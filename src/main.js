@@ -5,6 +5,7 @@ import router from './router'
 import './plugins/element.js'
 import {store} from './store'
 import {sync} from 'vuex-router-sync'
+import * as admin from 'firebase-admin'
 
 Vue.config.productionTip = false
 
@@ -19,6 +20,8 @@ const loggerOptions = {
   separator: '|',
   showConsoleColors: true
 }
+
+admin.initializeApp()
 
 Vue.use(VueLogger, loggerOptions)
 sync(store,router)
