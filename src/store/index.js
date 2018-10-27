@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars,no-console */
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex);
 export const store = new Vuex.Store({
@@ -23,12 +24,27 @@ export const store = new Vuex.Store({
        },
        clearToken(state){
            state.userTokenExists = null;
+       },
+       clearError(state){
+           state.existsError = null;
+       },
+       setUser(state,payload){
+           state.existsUser = payload;
        }
    },
    actions:{
        //Define All Actions.
        async loginUser({commit},payload){
-
+          try{
+              commit('setLoading',true)
+              commit('clearError')
+              const loggedUser = await firebase.auth().signInWithEmailAndPassword(payload.email,payload.password);
+              console.log(loggedUser);
+              commit('setUser',loggedUser.uid)
+              //
+          }catch (e) {
+              console.log(e.message);
+          }
        }
    },
     getters:{

@@ -16,7 +16,7 @@
             :rules="[
               { required: true, message: 'This field is required', trigger: 'blur' }
             ]">
-            <el-input type="password" v-model="loginForm.pass" auto-complete="off"></el-input>
+            <el-input type="password" v-model="loginForm.password" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('loginForm')">Submit</el-button>
@@ -27,7 +27,9 @@
   </el-container>
 </template>
 <script>
-import { Button, Container, Col, Form, FormItem, Input, Row } from 'element-ui'
+    /* eslint-disable no-console */
+
+    import { Button, Container, Col, Form, FormItem, Input, Row } from 'element-ui'
 
 export default {
   name: 'login',
@@ -49,7 +51,13 @@ export default {
     }
   },
   methods: {
-    submitForm () {
+    async submitForm () {
+        try{
+            this.$store.dispatch('loginUser',{email:this.loginForm.email,password:this.loginForm.password});
+
+        }catch (e) {
+            console.log(e.message);
+        }
     }
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Vue from 'vue'
 import VueLogger from 'vuejs-logger'
 import App from './App.vue'
@@ -5,7 +6,7 @@ import router from './router'
 import './plugins/element.js'
 import {store} from './store'
 import {sync} from 'vuex-router-sync'
-
+import connectFirebase from './utils/firebase'
 Vue.config.productionTip = false
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -25,5 +26,8 @@ sync(store,router)
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created(){
+    connectFirebase()
+  }
 }).$mount('#app')
