@@ -40,7 +40,7 @@ export const store = new Vuex.Store({
               commit('clearError')
               const loggedUser = await firebase.auth().signInWithEmailAndPassword(payload.email,payload.password);
               console.log(loggedUser);
-              commit('setUser',loggedUser.uid)
+              commit('setUser',loggedUser.user.uid)
               //
           }catch (e) {
               console.log(e.message);
