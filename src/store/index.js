@@ -46,6 +46,7 @@ export const store = new Vuex.Store({
               console.log(e.message);
           }
        }
+
    },
     getters:{
        processLoading(state){
