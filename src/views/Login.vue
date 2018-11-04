@@ -58,9 +58,11 @@ export default {
             this.isLoading();
             this.$store.dispatch('loginUser',{email:this.loginForm.email,password:this.loginForm.password});
             this.loadingInstance.close();
-
+            this.$router.push('/sendMessage')
         }catch (e) {
             console.log(e.message);
+            this.loadingInstance.close();
+
         }
     },
     isLoading(){
@@ -76,8 +78,23 @@ export default {
   computed:{
       isFormValid(){
           return this.loginForm.email !== '' && this.loginForm.password !== ''
+      },
+      user(){
+          return this.$store.state.existsUser;
       }
-  }
+  },
+    mounted(){
+      if(this.$store.state.existsUser!==null && this.$store.state.existsUser !== undefined){
+          this.$router.push('/sendMessage')
+      }
+    },
+    watch:{
+      user(value){
+          if(value!==null && value!==undefined){
+              this.$router.push('/sendMessage');
+          }
+      }
+    }
 }
 </script>
 <style scoped>

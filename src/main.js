@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars,no-console */
 import Vue from 'vue'
 import VueLogger from 'vuejs-logger'
 import App from './App.vue'
@@ -7,6 +7,8 @@ import './plugins/element.js'
 import {store} from './store'
 import {sync} from 'vuex-router-sync'
 import connectFirebase from './utils/firebase'
+import * as firebase from 'firebase';
+import VueSession from 'vue-session';
 Vue.config.productionTip = false
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -21,13 +23,21 @@ const loggerOptions = {
   showConsoleColors: true
 }
 
-Vue.use(VueLogger, loggerOptions)
+Vue.use(VueLogger, loggerOptions);
+Vue.use(VueSession);
 sync(store,router)
 new Vue({
   router,
   store,
   render: h => h(App),
-  created(){
+  async created(){
     connectFirebase()
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        //Set user uid
+          this.$store.dispatch('autoSignIn',user);
+          console.log(user)
+      }
+    });
   }
 }).$mount('#app')

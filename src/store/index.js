@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+import {Notification} from 'element-ui'
 
 Vue.use(Vuex);
 export const store = new Vuex.Store({
@@ -39,14 +40,27 @@ export const store = new Vuex.Store({
               commit('setLoading',true)
               commit('clearError')
               const loggedUser = await firebase.auth().signInWithEmailAndPassword(payload.email,payload.password);
+              const successOptions= {
+                title:'Authentication Success',
+                message:`${loggedUser.user.email} Logged in Successfully`
+              };
               console.log(loggedUser);
-              commit('setUser',loggedUser.user.uid)
-              //
+              commit('setUser',loggedUser.user.uid);
+              Notification.success(successOptions);
+
           }catch (e) {
               console.log(e.message);
-          }
-       }
+              const options = {
+                  title:'Authentication Error',
+                  message:e.message
+              };
+              Notification.error(options)
 
+          }
+       },
+       autoSignIn({commit},payload){
+         commit('setUser',payload.uid);
+       },
    },
     getters:{
        processLoading(state){
@@ -57,6 +71,9 @@ export const store = new Vuex.Store({
        },
        userToken(state){
            return state.existsError;
-       }
+       },
+        user(state){
+           return state.existsUser;
+        }
     }
 });
