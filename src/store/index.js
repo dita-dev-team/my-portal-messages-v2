@@ -61,6 +61,10 @@ export const store = new Vuex.Store({
        autoSignIn({commit},payload){
          commit('setUser',payload.uid);
        },
+       onLogoutUser({commit}){
+           firebase.auth().signOut();
+           commit('setUser',null);
+       }
    },
     getters:{
        processLoading(state){
