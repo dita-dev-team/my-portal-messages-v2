@@ -3,6 +3,8 @@
 ## Project setup
 ```
 yarn install
+
+Open .env.example and fill neccessary firebase keys
 ```
 
 ### Compiles and hot-reloads for development

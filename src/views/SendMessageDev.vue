@@ -46,13 +46,13 @@ import sendNotification from '../notification'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 import { quillEditor } from 'vue-quill-editor'
 
 let toolbarOptions = {
   container: [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
+      ['emoji'],
+      ['blockquote', 'code-block'],
     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
@@ -63,8 +63,9 @@ let toolbarOptions = {
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
-    ['clean']
-  ]
+    ['clean'],
+  ],
+    handlers: {'emoji': function() {}}
 }
 
 export default {
@@ -84,7 +85,10 @@ export default {
       firebaseToken: '',
       editorOption: {
         modules: {
-          toolbar: toolbarOptions
+          toolbar: toolbarOptions,
+            "emoji-toolbar": true,
+            "emoji-textarea": true,
+            "emoji-shortname": true
         }
       },
       messageLength: 0,

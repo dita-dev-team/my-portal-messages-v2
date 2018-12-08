@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import Vue from 'vue'
 import Router from 'vue-router'
+import auth from './store/auth-guard';
 import SendMessage from './views/SendMessage.vue'
 import SendMessageDev from './views/SendMessageDev.vue'
 import Login from './views/Login.vue'
@@ -17,9 +19,10 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/',
+      path: '/sendMessage',
       name: 'messages',
       component: SendMessage,
+      beforeEnter:auth,
       meta: {
         requiresAuth: true,
         title: 'Send a message'
@@ -29,18 +32,19 @@ export default new Router({
       path: '/dev',
       name: 'messages-dev',
       component: SendMessageDev,
+      beforeEnter:auth,
       meta: {
         requiresAuth: true,
         title: 'Send a message to devs'
       }
     },
     {
-      path: '/login',
+      path: '/',
       name: 'login',
       component: Login,
       meta: {
         title: 'Login to send a message'
       }
     }
-  ]
+  ],mode:'history'
 })

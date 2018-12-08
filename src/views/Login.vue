@@ -16,10 +16,10 @@
             :rules="[
               { required: true, message: 'This field is required', trigger: 'blur' }
             ]">
-            <el-input type="password" v-model="loginForm.pass" auto-complete="off"></el-input>
+            <el-input type="password" v-model="loginForm.password" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('loginForm')">Submit</el-button>
+            <el-button  type="primary" @click="submitForm('loginForm')" :disabled="!isFormValid">Submit</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -27,7 +27,9 @@
   </el-container>
 </template>
 <script>
-import { Button, Container, Col, Form, FormItem, Input, Row } from 'element-ui'
+    /* eslint-disable no-console,no-unused-vars */
+
+    import { Button, Container, Col, Form, FormItem, Input, Row,Loading  } from 'element-ui'
 
 export default {
   name: 'login',
@@ -38,20 +40,61 @@ export default {
     [Form.name]: Form,
     [FormItem.name]: FormItem,
     [Input.name]: Input,
-    [Row.name]: Row
+    [Row.name]: Row,
   },
   data () {
     return {
       loginForm: {
         email: '',
         password: ''
-      }
+      },
+        processLoader:false,
+        loadingInstance:null
     }
   },
   methods: {
-    submitForm () {
+    async submitForm () {
+        try{
+            this.isLoading();
+            this.$store.dispatch('loginUser',{email:this.loginForm.email,password:this.loginForm.password});
+            this.loadingInstance.close();
+            this.$router.push('/sendMessage')
+        }catch (e) {
+            console.log(e.message);
+            this.loadingInstance.close();
+
+        }
+    },
+    isLoading(){
+      const loadingOptions = {
+          lock: true,
+          text: 'Authenticating User..',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+      }
+     this.loadingInstance = Loading.service(loadingOptions);
     }
-  }
+  },
+  computed:{
+      isFormValid(){
+          return this.loginForm.email !== '' && this.loginForm.password !== ''
+      },
+      user(){
+          return this.$store.state.existsUser;
+      }
+  },
+    mounted(){
+      if(this.$store.state.existsUser!==null && this.$store.state.existsUser !== undefined){
+          this.$router.push('/sendMessage')
+      }
+    },
+    watch:{
+      user(value){
+          if(value!==null && value!==undefined){
+              this.$router.push('/sendMessage');
+          }
+      }
+    }
 }
 </script>
 <style scoped>
