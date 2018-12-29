@@ -7,6 +7,7 @@ import './plugins/element.js'
 import {store} from './store'
 import {sync} from 'vuex-router-sync'
 import connectFirebase from './utils/firebase'
+import connectToFirebaseAdmin from './utils/firebase-admin';
 import * as firebase from 'firebase';
 import VueSession from 'vue-session';
 import SideNavigation from './views/utils/SideNavigation'
@@ -34,6 +35,7 @@ new Vue({
   render: h => h(App),
   async created(){
     connectFirebase();
+    connectToFirebaseAdmin();
     firebase.auth().onAuthStateChanged((user)=>{
       if(user){
         //Set user uid

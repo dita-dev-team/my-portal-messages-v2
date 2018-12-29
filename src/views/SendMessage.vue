@@ -17,7 +17,7 @@
 <script>
 
     import {Button, Col, Container, Message, MessageBox, Row} from 'element-ui'
-    import sendNotification from '../notification'
+    import sendNotificationWithAdmin from '../utils/sendFcm'
 
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
@@ -35,7 +35,9 @@
             editor: Editor
         },
         data() {
-            return {}
+            return {
+
+            }
         },
         methods: {
             sendMessage() {
@@ -50,7 +52,9 @@
                     type: 'info',
                     callback: function (action) {
                         if (action === 'confirm') {
-                            sendNotification(self.title, self.content, '/topics/messages')
+                            let title = 'Test'
+                            let content = 'Testing FCM'
+                            sendNotificationWithAdmin(title,content)
                         } else {
                             self.$log.info('Send action cancelled')
                         }
