@@ -22,3 +22,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+/src/utils/my-portal-e90f4-firebase-adminsdk-d3oav-6de944c1f0.json
