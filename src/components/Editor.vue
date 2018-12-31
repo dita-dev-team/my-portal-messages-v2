@@ -1,13 +1,9 @@
 <template>
     <div>
+
         <el-row>
             <el-col :span="12" :offset="6">
-                <el-input v-model="title" placeholder="Title"></el-input>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="12" :offset="6">
-                <quill-editor v-model="content"
+                <quill-editor :content="dataText"
                               ref="myQuillEditor"
                               :options="editorOption"
                               @blur="onEditorBlur($event)"
@@ -49,6 +45,7 @@
 
     export default {
         name: "Editor",
+        props:['dataText'],
         components: {
             [Col.name]: Col,
             [Input.name]: Input,
@@ -57,7 +54,6 @@
         },
         data() {
             return {
-                content: '',
                 title: '',
                 editorOption: {
                     modules: {
