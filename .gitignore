@@ -1,4 +1,3 @@
-.DS_Store
 node_modules
 /dist
 env.js
@@ -12,8 +11,6 @@ env.js
 # Log files
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-
 # Editor directories and files
 .idea
 .vscode
@@ -22,4 +19,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-/src/utils/my-portal-e90f4-firebase-adminsdk-d3oav-6de944c1f0.json

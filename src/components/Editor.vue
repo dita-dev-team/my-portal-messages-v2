@@ -2,9 +2,15 @@
     <div>
         <el-row>
             <el-col :span="12" :offset="6">
+                <el-input v-model="title" placeholder="Title"></el-input>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="12" :offset="6">
                 <quill-editor :content="value"
                               ref="myQuillEditor"
                               :options="editorOption"
+                              @change="onEditorChange($event)"
                               @blur="onEditorBlur($event)"
                               @focus="onEditorFocus($event)"
                               @ready="onEditorReady($event)">
@@ -59,6 +65,7 @@
         data() {
             return {
                 title: '',
+                content: '',
                 editorOption: {
                     modules: {
                         toolbar: toolbarOptions
@@ -72,6 +79,9 @@
             content: function (val) {
                 this.messageLength = val.length
                 // this.editor.enable(this.messageLength >= this.maxLength)
+            },
+            title: function (val) {
+                this.$emit('title-change', val)
             }
         },
         computed: {
@@ -91,7 +101,7 @@
             },
             onEditorChange({quill, html, text}) {
                 this.$log.info('editor change!', quill, html, text)
-                this.content = html
+                this.$emit('content-change', html)
             }
         }
     }
