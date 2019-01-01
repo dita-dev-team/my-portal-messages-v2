@@ -5,7 +5,7 @@
                 <h1>My Portal Messages</h1>
             </el-col>
         </el-row>
-        <editor />
+        <editor v-on:title-change="updateTitle" v-on:content-change="updateContent" />
         <el-row>
             <el-col :span="12" :offset="6">
                 <el-button @click="sendMessage">Submit</el-button>
@@ -15,14 +15,7 @@
 </template>
 
 <script>
-
-    import {Button, Col, Container, Message, MessageBox, Row} from 'element-ui'
-    import sendNotification from '../notification'
-
-    import 'quill/dist/quill.core.css'
-    import 'quill/dist/quill.snow.css'
-    import 'quill/dist/quill.bubble.css'
-
+    import {Button, Col, Container, Message, MessageBox, Row, Input} from 'element-ui'
     import Editor from '@/components/Editor.vue'
 
     export default {
@@ -32,31 +25,56 @@
             [Col.name]: Col,
             [Container.name]: Container,
             [Row.name]: Row,
+            [Input.name]: Input,
             editor: Editor
         },
         data() {
-            return {}
+            return {
+                title: '',
+                content: ''
+            }
         },
         methods: {
-            sendMessage() {
-                let self = this
+            async sendMessage() {
                 if (this.content === '' || this.title === '') {
                     Message.error('Please fill both fields')
                     return
                 }
+                let messageTitle = this.title
+                let content = this.content
+                let self = this
+                let topic = process.env.VUE_APP_TOPIC
+                this.$log.info(`Topic is ${topic}`)
                 MessageBox.confirm('Are you sure you want to send this message?', 'Confirm', {
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
                     type: 'info',
-                    callback: function (action) {
+                    callback: async function (action) {
                         if (action === 'confirm') {
-                            sendNotification(self.title, self.content, '/topics/messages')
+                            await self.$store.dispatch('sendPushNotification', {
+                                messageTopic: topic,
+                                messageTitle: messageTitle,
+                                messageBody: content
+                            })
+
                         } else {
                             self.$log.info('Send action cancelled')
                         }
                     }
                 })
+            },
+            updateTitle(title) {
+                this.title = title
+            },
+            updateContent(content) {
+                this.content = content
             }
+        },
+        async mounted() {
+            await this.$store.dispatch('fetchAccessToken', {
+                email: this.$store.state.userDetails.email,
+                uid: this.$store.state.userDetails.uid
+            });
         }
     }
 </script>

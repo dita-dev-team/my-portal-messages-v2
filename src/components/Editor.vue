@@ -10,6 +10,7 @@
                 <quill-editor v-model="content"
                               ref="myQuillEditor"
                               :options="editorOption"
+                              @change="onEditorChange($event)"
                               @blur="onEditorBlur($event)"
                               @focus="onEditorFocus($event)"
                               @ready="onEditorReady($event)">
@@ -57,8 +58,8 @@
         },
         data() {
             return {
-                content: '',
                 title: '',
+                content: '',
                 editorOption: {
                     modules: {
                         toolbar: toolbarOptions
@@ -72,6 +73,9 @@
             content: function (val) {
                 this.messageLength = val.length
                 // this.editor.enable(this.messageLength >= this.maxLength)
+            },
+            title: function (val) {
+                this.$emit('title-change', val)
             }
         },
         computed: {
@@ -91,7 +95,7 @@
             },
             onEditorChange({quill, html, text}) {
                 this.$log.info('editor change!', quill, html, text)
-                this.content = html
+                this.$emit('content-change', text)
             }
         }
     }
