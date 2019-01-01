@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars,no-console */
 import Vue from 'vue'
 import VueLogger from 'vuejs-logger'
 import App from './App.vue'
@@ -38,7 +37,7 @@ new Vue({
       if(user){
         //Set user uid
           this.$store.dispatch('autoSignIn',user);
-          console.log(user)
+          Vue.$log.info(user)
       }
     });
   }

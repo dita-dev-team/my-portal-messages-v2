@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars,no-console */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
@@ -82,7 +81,7 @@ export const store = new Vuex.Store({
                 commit('setLoading', true);
                 commit('clearError');
                 const response = await api().post('/send', payload);
-                console.log(response.data);
+                Vue.$log.info(response.data)
                 commit('setLoading', false);
                 const successOptions = {
                     title: 'Message Sent Successfully',
@@ -106,7 +105,7 @@ export const store = new Vuex.Store({
                     title: 'Authentication Success',
                     message: `${loggedUser.user.email} Logged in Successfully`
                 };
-                console.log(loggedUser);
+                Vue.$log.info(loggedUser);
                 commit('setLoading', false);
                 commit('setUser', loggedUser.user.uid);
                 commit('setUserEmail', loggedUser.user.email);
@@ -114,7 +113,7 @@ export const store = new Vuex.Store({
                 Notification.success(successOptions);
 
             } catch (e) {
-                console.log(e.message);
+                Vue.$log.error(e.message);
                 const options = {
                     title: 'Authentication Error',
                     message: e.message

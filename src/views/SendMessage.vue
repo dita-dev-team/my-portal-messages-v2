@@ -15,7 +15,6 @@
 </template>
 
 <script>
-    /* eslint-disable */
     import {Button, Col, Container, Message, MessageBox, Row, Input} from 'element-ui'
     import Editor from '@/components/Editor.vue'
 
@@ -44,7 +43,8 @@
                 let messageTitle = this.title
                 let content = this.content
                 let self = this
-
+                let topic = process.env.VUE_APP_TOPIC
+                this.$log.info(`Topic is ${topic}`)
                 MessageBox.confirm('Are you sure you want to send this message?', 'Confirm', {
                     confirmButtonText: 'Yes',
                     cancelButtonText: 'No',
@@ -52,7 +52,7 @@
                     callback: async function (action) {
                         if (action === 'confirm') {
                             await self.$store.dispatch('sendPushNotification', {
-                                messageTopic: 'debug',
+                                messageTopic: topic,
                                 messageTitle: messageTitle,
                                 messageBody: content
                             })

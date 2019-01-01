@@ -27,9 +27,8 @@
   </el-container>
 </template>
 <script>
-    /* eslint-disable no-console,no-unused-vars */
 
-    import { Button, Container, Col, Form, FormItem, Input, Row,Loading  } from 'element-ui'
+    import { Button, Container, Col, Form, FormItem, Input, Row, Loading  } from 'element-ui'
 
 export default {
   name: 'login',
@@ -60,7 +59,7 @@ export default {
             this.loadingInstance.close();
             this.$router.push('/sendMessage')
         }catch (e) {
-            console.log(e.message);
+            this.$log.error(e.message);
             this.loadingInstance.close();
 
         }

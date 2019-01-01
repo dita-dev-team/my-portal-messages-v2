@@ -7,7 +7,7 @@
         </el-row>
         <el-row>
             <el-col :span="12" :offset="6">
-                <quill-editor :content="value"
+                <quill-editor v-model="content"
                               ref="myQuillEditor"
                               :options="editorOption"
                               @change="onEditorChange($event)"
@@ -50,12 +50,6 @@
 
     export default {
         name: "Editor",
-        props: {
-            value: {
-                type: String,
-                default: ''
-            }
-        },
         components: {
             [Col.name]: Col,
             [Input.name]: Input,
@@ -101,7 +95,7 @@
             },
             onEditorChange({quill, html, text}) {
                 this.$log.info('editor change!', quill, html, text)
-                this.$emit('content-change', html)
+                this.$emit('content-change', text)
             }
         }
     }
