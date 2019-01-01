@@ -68,6 +68,7 @@ export const store = new Vuex.Store({
                 let accessToken = response.data.token.accessToken;
                 commit('setJwtToken', accessToken);
                 commit('setLoading', false);
+
             } catch (e) {
                 const options = {
                     title: 'Error Occurred Fetching Access Token',
@@ -83,6 +84,11 @@ export const store = new Vuex.Store({
                 const response = await api().post('/send', payload);
                 console.log(response.data);
                 commit('setLoading', false);
+                const successOptions = {
+                    title: 'Message Sent Successfully',
+                    message: `${payload.messageTitle} has been dispatched`
+                };
+                Notification.success(successOptions);
             } catch (e) {
                 const options = {
                     title: 'Error Sending Push Notification',

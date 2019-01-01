@@ -1,9 +1,8 @@
 <template>
     <div>
-
         <el-row>
             <el-col :span="12" :offset="6">
-                <quill-editor :content="dataText"
+                <quill-editor :content="value"
                               ref="myQuillEditor"
                               :options="editorOption"
                               @blur="onEditorBlur($event)"
@@ -45,7 +44,12 @@
 
     export default {
         name: "Editor",
-        props:['dataText'],
+        props: {
+            value: {
+                type: String,
+                default: ''
+            }
+        },
         components: {
             [Col.name]: Col,
             [Input.name]: Input,
