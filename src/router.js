@@ -4,6 +4,7 @@ import auth from './store/auth-guard';
 import SendMessage from './views/SendMessage.vue'
 import SendMessageDev from './views/SendMessageDev.vue'
 import Login from './views/Login.vue'
+import ExamUpload from './views/ExamUpload'
 
 Vue.use(Router)
 
@@ -44,6 +45,17 @@ export default new Router({
       meta: {
         title: 'Login to send a message'
       }
+    },
+    {
+      path: '/exam',
+      name: 'exam-upload',
+      component: ExamUpload,
+      beforeEnter: auth,
+      meta: {
+        requiresAuth: true,
+        title: 'Upload exam timetable'
+      }
     }
-  ],mode:'history'
+  ],
+  mode:'history'
 })

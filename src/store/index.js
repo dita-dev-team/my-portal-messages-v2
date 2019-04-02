@@ -122,6 +122,23 @@ export const store = new Vuex.Store({
 
             }
         },
+        async uploadFile({commit}, file) {
+            commit('setLoading', true);
+            commit('clearError');
+            let formData = new FormData();
+            formData.append('files', file);
+            let instance = api();
+            instance.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+            try {
+                const response = await instance.post('excel/upload', formData);
+                Vue.$log.info(response.message);
+            } catch (e) {
+                Vue.$log.error(e);
+            }
+
+
+            commit('setLoading', false);
+        },
         autoSignIn({commit}, payload) {
             commit('setUser', payload.uid);
         },

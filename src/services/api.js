@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default () => {
     return axios.create({
-        baseURL: 'https://my-portal-fcm-api.herokuapp.com/api/v1',
+        baseURL: 'https://us-central1-my-portal-e90f4.cloudfunctions.net/my/api/v1',
         headers: {
             Authorization: `Bearer ${store.state.jwtWebToken}`
         }
