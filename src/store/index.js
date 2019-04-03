@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
-import {Notification} from 'element-ui'
+import {Message, Notification} from 'element-ui'
 import api from '../services/api'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -98,8 +98,8 @@ export const store = new Vuex.Store({
         },
         async loginUser({commit}, payload) {
             try {
-                commit('setLoading', true)
-                commit('clearError')
+                commit('setLoading', true);
+                commit('clearError');
                 const loggedUser = await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
                 const successOptions = {
                     title: 'Authentication Success',
@@ -132,10 +132,11 @@ export const store = new Vuex.Store({
             try {
                 const response = await instance.post('excel/upload', formData);
                 Vue.$log.info(response.message);
+                Message.info('Excel uploaded successfully!');
             } catch (e) {
                 Vue.$log.error(e);
+                Message.error(e.message);
             }
-
 
             commit('setLoading', false);
         },

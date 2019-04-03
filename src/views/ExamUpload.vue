@@ -18,20 +18,21 @@
 
 <script>
     import {Loading, Message, Upload} from 'element-ui'
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'exam-upload',
         components: {
             [Upload.name]: Upload
         },
-        data () {
+        data() {
             return {
                 loadingInstance: null
             }
         },
         methods: {
             handleFileUploadProgress(event) {
-              this.$log.info(event)
+                this.$log.info(event)
             },
             handleFileUploadSuccess() {
                 this.$log.info('Excel file uploaded successfully.');
@@ -59,16 +60,12 @@
                     Authorization: `Bearer ${this.$store.state.jwtWebToken}`
                 }
             },
-            async uploadFile(file) {
-              this.$log.info(file);
+            uploadFile(file) {
+                this.$log.info(file);
                 try {
-                    this.isLoading();
                     this.$store.dispatch('uploadFile', file.file);
-                    this.loadingInstance.close();
-                    Message.info('Excel uploaded successfully')
                 } catch (e) {
                     this.$log.error(e.message);
-                    this.loadingInstance.close();
                 }
             },
             isLoading() {
@@ -79,6 +76,21 @@
                     background: 'rgba(0, 0, 0, 0.7)'
                 };
                 this.loadingInstance = Loading.service(loadingOptions);
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'processLoading'
+            ])
+        },
+        watch: {
+            processLoading(loading) {
+                this.$log.info(`loading status: ${loading}`);
+                if (loading) {
+                    this.isLoading();
+                } else {
+                    this.loadingInstance.close();
+                }
             }
         }
     }
