@@ -3,7 +3,7 @@
     <el-header style="text-align: right" v-if="isUserAuthenticated">
     <el-row>
       <router-link :to="{name: 'exam-upload'}">
-        <el-button round>Exam Upload</el-button>
+        <el-button round style="margin-right: 10px">Exam Upload</el-button>
       </router-link>
       <el-button round>DCF Messaging</el-button>
       <el-button round @click="onClickLogout">Logout</el-button>
