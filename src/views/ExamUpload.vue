@@ -43,8 +43,14 @@
                 Message.error(err);
             },
             beforeFileUpload(file) {
-                const isExcel = file.type === 'application/vnd.ms-excel' ||
-                    file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                this.$log.info(file.type);
+                const types = new Set([
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'application/wps-office.xls',
+                    'application/wps-office.xlsx'
+                ]);
+                const isExcel = types.has(file.type);
                 const isLt8M = file.size / 1024 / 1024 < 8;
 
                 if (!isExcel) {
