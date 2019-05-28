@@ -61,12 +61,10 @@ export const store = new Vuex.Store({
         //Define All Actions.
         async fetchAccessToken({commit}, payload) {
             try {
-                commit('setLoading', true);
                 commit('clearError');
                 const response = await api().post('/client/access-token', payload);
                 let accessToken = response.data.token.accessToken;
                 commit('setJwtToken', accessToken);
-                commit('setLoading', false);
 
             } catch (e) {
                 const options = {
@@ -106,11 +104,13 @@ export const store = new Vuex.Store({
                     message: `${loggedUser.user.email} Logged in Successfully`
                 };
                 Vue.$log.info(loggedUser);
-                commit('setLoading', false);
+
                 commit('setUser', loggedUser.user.uid);
                 commit('setUserEmail', loggedUser.user.email);
                 commit('setUserUID', loggedUser.user.uid);
                 Notification.success(successOptions);
+                commit('setLoading',false);
+
 
             } catch (e) {
                 Vue.$log.error(e.message);
@@ -118,7 +118,8 @@ export const store = new Vuex.Store({
                     title: 'Authentication Error',
                     message: e.message
                 };
-                Notification.error(options)
+                Notification.error(options);
+                commit('setLoading',false);
 
             }
         },
