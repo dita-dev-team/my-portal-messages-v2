@@ -18,10 +18,17 @@ export const store = new Vuex.Store({
         existsError: null,
         userTokenExists: null,
         jwtWebToken: '',
+        firebaseAccessToken : null,
         userDetails: {
             email: '',
             uid: ''
-        }
+        },
+        calendarEvents: [{
+            description: '',
+            endDate: '',
+            startDate: ''
+        }],
+        events:[]
     },
     mutations: {
         setLoading(state, payload) {
@@ -55,6 +62,18 @@ export const store = new Vuex.Store({
             state.userDetails.email = '';
             state.userDetails.uid = '';
             state.jwtWebToken = null;
+        },
+        setCalendarEvents(state, payload) {
+            state.events = payload;
+        },
+        clearCalendarEvents(state) {
+            state.calendarEvents = [];
+        },
+        setFirebaseToken(state,payload){
+            state.firebaseAccessToken = payload;
+        },
+        clearFirebaseToken(state){
+            state.firebaseAccessToken = null;
         }
     },
     actions: {
@@ -99,6 +118,7 @@ export const store = new Vuex.Store({
                 commit('setLoading', true);
                 commit('clearError');
                 const loggedUser = await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
+                let accessToken = await firebase.auth().currentUser.getIdToken();
                 const successOptions = {
                     title: 'Authentication Success',
                     message: `${loggedUser.user.email} Logged in Successfully`
@@ -108,8 +128,9 @@ export const store = new Vuex.Store({
                 commit('setUser', loggedUser.user.uid);
                 commit('setUserEmail', loggedUser.user.email);
                 commit('setUserUID', loggedUser.user.uid);
+                commit('setFirebaseToken',accessToken);
                 Notification.success(successOptions);
-                commit('setLoading',false);
+                commit('setLoading', false);
 
 
             } catch (e) {
@@ -119,7 +140,7 @@ export const store = new Vuex.Store({
                     message: e.message
                 };
                 Notification.error(options);
-                commit('setLoading',false);
+                commit('setLoading', false);
 
             }
         },
@@ -141,6 +162,25 @@ export const store = new Vuex.Store({
 
             commit('setLoading', false);
         },
+
+        async fetchCalendarEvents({commit}) {
+            try {
+                commit('setLoading', true);
+                commit('clearError');
+                let databaseReference = await firebase.firestore();
+                let querySnapshot = await databaseReference.collection('calendar').get();
+                let events = []
+                querySnapshot.forEach(document => {
+                    Vue.$log.error(document.data());
+                    events.push(document.data());
+                })
+                commit('setCalendarEvents',events);
+            } catch (e) {
+                Vue.$log.error(e);
+                Message.error(e.message);
+            }
+        },
+
         autoSignIn({commit}, payload) {
             commit('setUser', payload.uid);
         },
@@ -148,7 +188,8 @@ export const store = new Vuex.Store({
             firebase.auth().signOut();
             commit('setUser', null);
             commit('clearUserDetails');
-        }
+            commit('clearFirebaseToken');
+        },
     },
     getters: {
         processLoading(state) {
@@ -165,6 +206,12 @@ export const store = new Vuex.Store({
         },
         jwtToken(state) {
             return state.jwtWebToken;
+        },
+        events(state){
+            return state.events;
+        },
+        firebaseAccessToken(state) {
+            return state.firebaseAccessToken;
         }
     }
 });

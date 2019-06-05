@@ -31,7 +31,10 @@
         data() {
             return {
                 title: '',
-                content: ''
+                content: '',
+                user: {
+                    emailAddress: ''
+                }
             }
         },
         methods: {
@@ -42,6 +45,7 @@
                 }
                 let messageTitle = this.title
                 let content = this.content
+                let email = this.user.emailAddress
                 let self = this
                 let topic = process.env.VUE_APP_TOPIC
                 this.$log.info(`Topic is ${topic}`)
@@ -54,7 +58,8 @@
                             await self.$store.dispatch('sendPushNotification', {
                                 messageTopic: topic,
                                 messageTitle: messageTitle,
-                                messageBody: content
+                                messageBody: content,
+                                emailAddress: email
                             })
 
                         } else {
@@ -71,10 +76,7 @@
             }
         },
         async mounted() {
-            await this.$store.dispatch('fetchAccessToken', {
-                email: this.$store.state.userDetails.email,
-                uid: this.$store.state.userDetails.uid
-            });
+            this.user.emailAddress =  this.$store.state.userDetails.email;
         }
     }
 </script>

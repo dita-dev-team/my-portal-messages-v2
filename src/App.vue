@@ -5,7 +5,7 @@
                 <router-link :to="{name: 'exam-upload'}">
                     <el-button round style="margin-right: 10px">Exam Upload</el-button>
                 </router-link>
-                <router-link :to="{name:''}">
+                <router-link :to="{name:'calendar-events'}">
                     <el-button round style="margin-right: 10px">Calendar of Events</el-button>
                 </router-link>
                 <el-button round @click="onClickCloudMessaging">Cloud Messaging</el-button>
