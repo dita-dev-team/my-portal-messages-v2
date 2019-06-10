@@ -5,9 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "lint": "vue-cli-service lint",
-    "deploy": "firebase deploy --only hosting",
-    "test": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"
+    "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
     "@firebase/app-types": "^0.3.2",
@@ -28,12 +28,19 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
-    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-eslint": "^10.0.1",
     "babel-plugin-component": "^1.1.1",
     "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-vue": "^5.0.0",
     "karma": "^4.1.0",
     "mocha": "^6.1.4",
+    "prettier": "^1.18.2",
     "vue-cli-plugin-element": "^1.0.0",
     "vue-template-compiler": "^2.5.17"
   },
@@ -44,7 +51,8 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/prettier"
     ],
     "rules": {},
     "parserOptions": {

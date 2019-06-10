@@ -7,7 +7,10 @@
     </el-row>
     <el-row>
       <el-col :span="12" :offset="6">
-        <el-input v-model="firebaseToken" placeholder="Firebase token"></el-input>
+        <el-input
+          v-model="firebaseToken"
+          placeholder="Firebase token"
+        ></el-input>
       </el-col>
     </el-row>
     <el-row>
@@ -17,18 +20,20 @@
     </el-row>
     <el-row>
       <el-col :span="12" :offset="6">
-        <quill-editor v-model="content"
-              ref="myQuillEditor"
-              :options="editorOption"
-              @blur="onEditorBlur($event)"
-              @focus="onEditorFocus($event)"
-              @ready="onEditorReady($event)">
+        <quill-editor
+          v-model="content"
+          ref="myQuillEditor"
+          :options="editorOption"
+          @blur="onEditorBlur($event)"
+          @focus="onEditorFocus($event)"
+          @ready="onEditorReady($event)"
+        >
         </quill-editor>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12" :offset="6">
-        <p class="text-right"> {{ messageLength }} / 2000 </p>
+        <p class="text-right">{{ messageLength }} / 2000</p>
       </el-col>
     </el-row>
     <el-row>
@@ -40,36 +45,44 @@
 </template>
 
 <script>
-import { Button, Col, Container, Input, Message, MessageBox, Row } from 'element-ui'
-import sendNotification from '../notification'
+import {
+  Button,
+  Col,
+  Container,
+  Input,
+  Message,
+  MessageBox,
+  Row
+} from "element-ui";
+import sendNotification from "../notification";
 
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import { quillEditor } from 'vue-quill-editor'
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 
 let toolbarOptions = {
   container: [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['emoji'],
-      ['blockquote', 'code-block'],
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-    ['clean'],
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["emoji"],
+    ["blockquote", "code-block"],
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"]
   ],
-    handlers: {'emoji': function() {}}
-}
+  handlers: { emoji: function() {} }
+};
 
 export default {
-  name: 'messages-dev',
+  name: "messages-dev",
   components: {
     [Button.name]: Button,
     [Col.name]: Col,
@@ -78,74 +91,83 @@ export default {
     [Row.name]: Row,
     quillEditor
   },
-  data () {
+  data() {
     return {
-      content: '',
-      title: '',
-      firebaseToken: '',
+      content: "",
+      title: "",
+      firebaseToken: "",
       editorOption: {
         modules: {
           toolbar: toolbarOptions,
-            "emoji-toolbar": true,
-            "emoji-textarea": true,
-            "emoji-shortname": true
+          "emoji-toolbar": true,
+          "emoji-textarea": true,
+          "emoji-shortname": true
         }
       },
       messageLength: 0,
       maxLength: 2000
-    }
+    };
   },
   watch: {
-    content: function (val) {
-      this.messageLength = val.length
+    content: function(val) {
+      this.messageLength = val.length;
       // this.editor.enable(this.messageLength >= this.maxLength)
     }
   },
   computed: {
-    editor () {
-      return this.$refs.myQuillEditor.quill
+    editor() {
+      return this.$refs.myQuillEditor.quill;
     }
   },
   methods: {
-    sendMessage () {
-      let self = this
-      if (this.content === '' || this.title === '' || this.firebaseToken === '') {
-        Message.error('Please fill both fields')
-        return
+    sendMessage() {
+      let self = this;
+      if (
+        this.content === "" ||
+        this.title === "" ||
+        this.firebaseToken === ""
+      ) {
+        Message.error("Please fill both fields");
+        return;
       }
-      MessageBox.confirm('Are you sure you want to send this message?', 'Confirm', {
-        confirmButtonText: 'Yes',
-        cancelButtonText: 'No',
-        type: 'info',
-        callback: function (action) {
-          if (action === 'confirm') {
-            sendNotification(self.title, self.content, self.firebaseToken)
-          } else {
-              self.$log.info('Send action cancelled')
+      MessageBox.confirm(
+        "Are you sure you want to send this message?",
+        "Confirm",
+        {
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+          type: "info",
+          callback: function(action) {
+            if (action === "confirm") {
+              sendNotification(self.title, self.content, self.firebaseToken);
+            } else {
+              self.$log.info("Send action cancelled");
+            }
           }
         }
-      })
+      );
     },
-    onEditorBlur (quill) {
-        this.$log.info('editor blur!', quill)
+    onEditorBlur(quill) {
+      this.$log.info("editor blur!", quill);
     },
-    onEditorFocus (quill) {
-        this.$log.info('editor focus!', quill)
+    onEditorFocus(quill) {
+      this.$log.info("editor focus!", quill);
     },
-    onEditorReady (quill) {
-        this.$log.info('editor ready!', quill)
+    onEditorReady(quill) {
+      this.$log.info("editor ready!", quill);
     },
-    onEditorChange ({ quill, html, text }) {
-        this.$log.info('editor change!', quill, html, text)
-      this.content = html
+    onEditorChange({ quill, html, text }) {
+      this.$log.info("editor change!", quill, html, text);
+      this.content = html;
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
